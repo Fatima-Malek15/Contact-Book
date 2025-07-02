@@ -29,7 +29,9 @@
         <script src="config.js"></script>
         <script>
             var id = getId();
+            console.log(id);
             document.getElementById("homeLink").addEventListener('click', homeLink);
+            document.getElementById("editContact").addEventListener('click', editContact);
 
             function getId(){
                 var url = window.location.href;
@@ -39,18 +41,40 @@
                 return id;
             }
 
+            console.log(id);
             function getContact(){
-                fetch(rootPath + 'controller/get-contacts/?id=' + id)
-                .then(function (response){
+                fetch(rootPath + "controller/get-contacts/?id=" + id)
+                .then(function(response){
                     return response.json();
                 })
                 .then(function(data){
                     //display data output
-                })
+                    displayOutput(data);
+                    console.log(data);
+                });
             }
 
             function homeLink(){
                 window.open("index.html", "_self");
+            }
+
+            function displayOutput(data){
+                avatarImg = `<img src="${rootPath}/controller/uploads/${data[0].avatar}" width="200"/>
+                `
+                document.getElementById("avatarImage").innerHTML = avatarImg;
+                document.getElementById("firstname").value = data[0].firstname;
+                document.getElementById("lastname").value = data[0].lastname;
+                document.getElementById("mobile").value = data[0].mobile;
+                document.getElementById("email").value = data[0].email;
+            }
+
+            function editContact(){
+                document.getElementById("firstname").readOnly = false;
+                document.getElementById("lastname").readOnly = false;
+                document.getElementById("mobile").readOnly = false;
+                document.getElementById("email").readOnly = false;
+                document.getElementById("avatar").readOnly = false;
+                document.getElementById("submitForm").readOnly = false;
             }
         </script>
     </body>

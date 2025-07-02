@@ -19,7 +19,7 @@
             {
                 fetch(rootPath + "controller/get-contacts/")
                 .then(function(response){
-                    return response.json;
+                    return response.json();
                 })
 
                 .then(function(data){
