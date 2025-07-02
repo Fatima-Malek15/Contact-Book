@@ -29,9 +29,9 @@
         <script src="config.js"></script>
         <script>
             var id = getId();
-            console.log(id);
             document.getElementById("homeLink").addEventListener('click', homeLink);
             document.getElementById("editContact").addEventListener('click', editContact);
+            document.getElementById("submitForm").addEventListener('click', submitForm);
 
             function getId(){
                 var url = window.location.href;
@@ -41,9 +41,9 @@
                 return id;
             }
 
-            console.log(id);
             function getContact(){
-                fetch(rootPath + "controller/get-contacts/?id=" + id)
+                //error maybe here / or no /
+                fetch(rootPath + 'controller/get-contacts/?id=' + id)
                 .then(function(response){
                     return response.json();
                 })
@@ -75,6 +75,35 @@
                 document.getElementById("email").readOnly = false;
                 document.getElementById("avatar").readOnly = false;
                 document.getElementById("submitForm").readOnly = false;
+            }
+
+            function submitForm(e){
+                e.preventDefault();
+
+                const form = new FormData(document.querySelector("#editForm"));
+                form.append('apiKey', apiKey);
+                form.append('id', id);
+
+                fetch(rootPath + 'controller/edit-contact/', {
+                    method: 'POST',
+                    headers: {'Accept': 'application/json, *.*'},
+                    body: form
+                })
+
+                .then(function(response){
+                    return response.text();
+                })
+
+                .then(function(data){
+                    if(data == "1"){
+                        alert("Contact edited.");
+                        homeLink();
+                    }else{
+                        alert(data);
+                        homeLink();
+                    }
+                })
+
             }
         </script>
     </body>
